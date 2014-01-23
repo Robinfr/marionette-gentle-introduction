@@ -32,15 +32,15 @@ ContactManager.module('Entities', function (Entities, ContactManager, Backbone, 
             var contacts = new Entities.ContactCollection();
             var defer = $.Deferred();
             contacts.fetch({
-                success: function (data) {
+                success: function(data){
                     defer.resolve(data);
                 }
             });
 
             var promise = defer.promise();
-            $.when(promise).done(function (contacts) {
+            $.when(promise).done(function(contacts){
                 if (contacts.length === 0) {
-                    var models = initializeContacts();
+                    var models=  initializeContacts();
                     contacts.reset(models);
                 }
             });
@@ -51,14 +51,16 @@ ContactManager.module('Entities', function (Entities, ContactManager, Backbone, 
         getContactEntity: function (contactId) {
             var contact = new Entities.Contact({id: contactId});
             var defer = $.Deferred();
-            contact.fetch({
-                success: function (data) {
-                    defer.resolve(data);
-                },
-                error: function () {
-                    defer.resolve(undefined);
-                }
-            });
+            setTimeout(function () {    //Artificial data latency
+                contact.fetch({
+                    success: function(data){
+                        defer.resolve(data);
+                    },
+                    error: function(){
+                        defer.resolve(undefined);
+                    }
+                });
+            }, 2000);
             return defer.promise();
         }
     }
