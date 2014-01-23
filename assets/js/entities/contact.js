@@ -21,7 +21,7 @@ ContactManager.module('Entities', function (Entities, ContactManager, Backbone, 
             {id: 2, firstName: 'Bob', lastName: 'Brigham', phoneNumber: '555-0163'},
             {id: 3, firstName: 'Charlie', lastName: 'Campbell', phoneNumber: '555-0129'}
         ]);
-        contacts.forEach(function(contact){
+        contacts.forEach(function (contact) {
             contact.save();
         });
         return contacts;
@@ -31,24 +31,26 @@ ContactManager.module('Entities', function (Entities, ContactManager, Backbone, 
         getContactEntities: function () {
             var contacts = new Entities.ContactCollection();
             contacts.fetch();
-            if(contacts.length === 0){
+            if (contacts.length === 0) {
                 return initializeContacts();
             }
             return contacts;
         },
 
-        getContactEntity: function(contactId){
-            var contact = new Entites.Contact({id: contactId});
-            contact.fetch();
+        getContactEntity: function (contactId) {
+            var contact = new Entities.Contact({id: contactId});
+            //setTimeout(function () {    //Artificial data latency
+                contact.fetch();
+           // }, 2000);
             return contact;
         }
     }
 
-    ContactManager.reqres.setHandler('contact:entities', function(){
+    ContactManager.reqres.setHandler('contact:entities', function () {
         return API.getContactEntities();
     });
 
-    ContactManager.reqres.setHandler('contact:entity', function(id){
+    ContactManager.reqres.setHandler('contact:entity', function (id) {
         return API.getContactEntity(id);
     });
 });
