@@ -1,6 +1,21 @@
 ContactManager.module('Entities', function (Entities, ContactManager, Backbone, Marionette, $, _) {
     Entities.Contact = Backbone.Model.extend({
-        urlRoot: 'contacts'
+        urlRoot: 'contacts',
+
+        validate: function (attrs, options) {
+            var errors = {};
+            if (!attrs.firstName) {
+                errors.firstName = "can't be blank";
+            }
+            if (!attrs.lastName) {
+                errors.lastName = "can't be blank";
+            } else if (attrs.lastName.length < 2) {
+                errors.lastName = "is too short";
+            }
+            if (!_.isEmpty(errors)) {
+                return errors;
+            }
+        }
     });
 
     Entities.configureStorage(Entities.Contact);
@@ -32,15 +47,15 @@ ContactManager.module('Entities', function (Entities, ContactManager, Backbone, 
             var contacts = new Entities.ContactCollection();
             var defer = $.Deferred();
             contacts.fetch({
-                success: function(data){
+                success: function (data) {
                     defer.resolve(data);
                 }
             });
 
             var promise = defer.promise();
-            $.when(promise).done(function(contacts){
+            $.when(promise).done(function (contacts) {
                 if (contacts.length === 0) {
-                    var models=  initializeContacts();
+                    var models = initializeContacts();
                     contacts.reset(models);
                 }
             });
@@ -53,10 +68,10 @@ ContactManager.module('Entities', function (Entities, ContactManager, Backbone, 
             var defer = $.Deferred();
             setTimeout(function () {    //Artificial data latency
                 contact.fetch({
-                    success: function(data){
+                    success: function (data) {
                         defer.resolve(data);
                     },
-                    error: function(){
+                    error: function () {
                         defer.resolve(undefined);
                     }
                 });
