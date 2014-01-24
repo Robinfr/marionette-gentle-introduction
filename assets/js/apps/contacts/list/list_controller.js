@@ -30,6 +30,7 @@ ContactManager.module('ContactsApp.List', function (List, ContactManager, Backbo
                         if(model.save(data)){
                             childView.render();
                             ContactManager.dialogRegion.close();
+                            childView.flash('success');
                         }else{
                             view.triggerMethod('form:data:invalid', model.validationError);
                         }
