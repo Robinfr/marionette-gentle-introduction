@@ -13,6 +13,16 @@ ContactManager.module('ContactsApp.List', function(List, ContactManager, Backbon
 
         triggers: {
             'click button.js-new':'contact:new'
+        },
+
+        events: {
+            'submit #filter-form' : 'filterContacts'
+        },
+
+        filterContacts: function(e){
+            e.preventDefault();
+            var criterion = this.$('.js-filter-criterion').val(); //Could use Syphon here but let us appreciate what it does by doing it manually
+            this.trigger('contacts:filter', criterion);
         }
     });
 

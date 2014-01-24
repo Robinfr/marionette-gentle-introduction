@@ -10,9 +10,23 @@ ContactManager.module('ContactsApp.List', function (List, ContactManager, Backbo
             var contactsListPanel = new List.Panel();
 
             $.when(fetchingContacts).done(function (contacts) {
+                var filteredContacts = ContactManager.Entities.FilteredCollection({
+                    collection: contacts,
+                    filterFunction: function (filterCriterion) {
+                        var criterion = filterCriterion.toLowerCase();
+                        return function (contact) {
+                            if (contact.get('firstName').toLowerCase().indexOf(criterion) !== -1
+                                || contact.get('lastName').toLowerCase().indexOf(criterion) !== -1
+                                || contact.get('phoneNumber').toLowerCase().indexOf(criterion) !== -1) {
+                                return contact;
+                            }
+                        }
+                    }
+                });
+
 
                 var contactsListView = new List.Contacts({
-                    collection: contacts
+                    collection: filteredContacts
                 });
 
                 contactsListLayout.on('show', function () {
@@ -34,9 +48,12 @@ ContactManager.module('ContactsApp.List', function (List, ContactManager, Backbo
                             data.id = highestId + 1;
                             if (newContact.save(data)) {
                                 contacts.add(newContact);
-                                ContactManager.dialogRegion.close();
-                                var $view = contactsListView.children.findByModel(newContact);
-                                $view.flash('success');
+                                view.trigger('dialog:close');
+                                var newContactView = contactsListView.children.findByModel(newContact);
+
+                                if (newContactView) { //Check if not hidden by filter
+                                    newContactView.flash('success');
+                                }
                             } else {
                                 view.triggerMethod('form:data:invalid', newContact.validationError);
                             }
@@ -44,6 +61,10 @@ ContactManager.module('ContactsApp.List', function (List, ContactManager, Backbo
 
                         ContactManager.dialogRegion.show(view);
                     });
+                });
+
+                contactsListPanel.on('contacts:filter', function (filterCriterion) {
+                    filteredContacts.filter(filterCriterion);
                 });
 
                 contactsListView.on('itemview:contact:delete', function (childView, model) {
@@ -62,7 +83,7 @@ ContactManager.module('ContactsApp.List', function (List, ContactManager, Backbo
                     view.on('form:submit', function (data) {
                         if (model.save(data)) {
                             childView.render();
-                            ContactManager.dialogRegion.close();
+                            view.trigger('dialog:close');
                             childView.flash('success');
                         } else {
                             view.triggerMethod('form:data:invalid', model.validationError);

@@ -52,12 +52,6 @@ ContactManager.module('Common.Views', function (Views, ContactManager, Backbone,
             this.trigger('form:submit', data);
         },
 
-        submitClicked: function (e) {
-            e.preventDefault();
-            var data = Backbone.Syphon.serialize(this);
-            this.trigger('form:submit', data);
-        },
-
         onFormDataInvalid: function (errors) {
             var $view = this.$el;
 
