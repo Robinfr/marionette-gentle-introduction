@@ -26,6 +26,15 @@ ContactManager.module('ContactsApp.List', function (List, ContactManager, Backbo
                         asModal: true
                     });
 
+                    view.on('form:submit', function(data){
+                        if(model.save(data)){
+                            childView.render();
+                            ContactManager.dialogRegion.close();
+                        }else{
+                            view.triggerMethod('form:data:invalid', model.validationError);
+                        }
+                    });
+
                     ContactManager.dialogRegion.show(view);
                 });
 
