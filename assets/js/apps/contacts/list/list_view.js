@@ -19,10 +19,18 @@ ContactManager.module('ContactsApp.List', function(List, ContactManager, Backbon
             'submit #filter-form' : 'filterContacts'
         },
 
+        ui: {
+            criterion: 'input.js-filter-criterion'
+        },
+
         filterContacts: function(e){
             e.preventDefault();
             var criterion = this.$('.js-filter-criterion').val(); //Could use Syphon here but let us appreciate what it does by doing it manually
             this.trigger('contacts:filter', criterion);
+        },
+
+        onSetFilterCriterion : function(criterion){
+            this.ui.criterion.val(criterion);
         }
     });
 
