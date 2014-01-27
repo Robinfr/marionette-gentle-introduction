@@ -17,8 +17,10 @@ define(['app'], function (ContactManager) {
             },
 
             showContact: function (id) {
-                ContactsApp.Show.Controller.showContact(id);
-                ContactManager.execute('set:active:header', 'contacts');
+                require(['apps/contacts/show/show_controller'], function (ShowController) {
+                    ShowController.showContact(id);
+                    ContactManager.execute('set:active:header', 'contacts');
+                });
             },
 
             editContact: function (id) {
