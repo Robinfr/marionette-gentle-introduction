@@ -16,6 +16,18 @@ define(['marionette', 'apps/config/marionette/regions/dialog'], function (Marion
         return Backbone.history.fragment;
     }
 
+    ContactManager.startSubApp = function(appName, args){
+        var currentApp = ContactManager.module(appName);
+        if(ContactManager.currentApp === currentApp){ return; }
+
+        if(ContactManager.currentApp){
+            ContactManager.currentApp.stop();
+        }
+
+        ContactManager.currentApp = currentApp;
+        currentApp.start(args);
+    }
+
     ContactManager.on('initialize:after', function () {
         if (Backbone.history) {
             require(['apps/contacts/contacts_app', 'apps/about/about_app'], function () {

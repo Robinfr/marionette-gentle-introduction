@@ -5,7 +5,7 @@ define(['app', 'apps/contacts/list/list_view', 'common/views'], function (Contac
                 var loadingView = new CommonViews.Loading();
                 ContactManager.mainRegion.show(loadingView);
 
-                require(['entities/contact'], function () {
+                require(['entities/contact/collection'], function () {
 
                     var fetchingContacts = ContactManager.request('contact:entities');
 

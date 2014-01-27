@@ -9,7 +9,7 @@ define(['app', 'common/views', 'apps/contacts/edit/edit_view', 'apps/contacts/sh
                 });
                 ContactManager.mainRegion.show(loadingView);
 
-                require(['entities/contact'], function () {
+                require(['entities/contact/collection'], function () {
                     var fetchingContact = ContactManager.request('contact:entity', id);
                     $.when(fetchingContact).done(function (contact) {
                         var view;
