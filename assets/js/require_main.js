@@ -6,7 +6,11 @@ requirejs.config({
         'jquery-ui': 'vendor/jquery-ui',
         json2: 'vendor/json2',
         underscore: 'vendor/underscore',
-        marionette: 'vendor/backbone.marionette'
+        marionette: 'vendor/backbone.marionette',
+        localStorage: 'vendor/backbone.localstorage',
+        picky: 'vendor/backbone.picky',
+        syphon: 'vendor/backbone.syphon',
+        tpl: 'vendor/tpl'
     },
 
     shim: {
@@ -23,7 +27,8 @@ requirejs.config({
             deps: ['backbone'],
             exports: 'Marionette'
         },
-        'jquery-ui': ['jquery']
+        'jquery-ui': ['jquery'],
+        'localStorage': ['backbone']
     }
 });
 
