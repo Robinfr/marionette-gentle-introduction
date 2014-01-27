@@ -24,8 +24,10 @@ define(['app'], function (ContactManager) {
             },
 
             editContact: function (id) {
-                ContactsApp.Edit.Controller.editContact(id);
-                ContactManager.execute('set:active:header', 'contacts');
+                require(['apps/contacts/edit/edit_controller'], function (EditController) {
+                    EditController.editContact(id);
+                    ContactManager.execute('set:active:header', 'contacts');
+                });
             }
         };
 
