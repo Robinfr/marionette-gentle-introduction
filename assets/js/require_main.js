@@ -35,6 +35,6 @@ requirejs.config({
     }
 });
 
-require(['app'], function(ContactManager){
+require(['app', 'apps/header/header_app'], function(ContactManager){
     ContactManager.start();
 });
