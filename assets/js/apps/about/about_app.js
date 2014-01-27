@@ -1,18 +1,5 @@
 define(['app'], function (ContactManager) {
-    ContactManager.module('AboutApp', function (AboutApp, ContactManager, Backbone, Marionette, $, _) {
-        AboutApp.startWithParent = false;
-
-        AboutApp.onStart = function () {
-            console.log('AboutApp started');
-        };
-
-        AboutApp.onStop = function () {
-            console.log('AboutApp stopped');
-        };
-    });
-
-    ContactManager.module('AboutApp.Router', function (AboutAppRouter, ContactManager, Backbone, Marionette, $, _) {
-        AboutAppRouter.Router = Marionette.AppRouter.extend({
+        var Router = Marionette.AppRouter.extend({
             appRoutes: {
                 'about': 'showAbout'
             }
@@ -21,7 +8,7 @@ define(['app'], function (ContactManager) {
         var API = {
             showAbout: function () {
                 require(['apps/about/show/show_controller'], function (ShowController) {
-                    ContactManager.startSubApp('AboutApp');
+                    ContactManager.startSubApp(null);
                     ShowController.showAbout();
                     ContactManager.execute('set:active:header', 'about');
                 });
@@ -34,10 +21,10 @@ define(['app'], function (ContactManager) {
         });
 
         ContactManager.addInitializer(function () {
-            new AboutAppRouter.Router({
+            new Router({
                 controller: API
             });
         });
-    });
-    return ContactManager.AboutAppRouter;
+
+    return Router;
 });
