@@ -3,6 +3,7 @@ requirejs.config({
     paths: {
         backbone: 'vendor/backbone',
         jquery: 'vendor/jquery',
+        'jquery-ui': 'vendor/jquery-ui',
         json2: 'vendor/json2',
         underscore: 'vendor/underscore',
         marionette: 'vendor/backbone.marionette'
@@ -21,10 +22,11 @@ requirejs.config({
         marionette: {
             deps: ['backbone'],
             exports: 'Marionette'
-        }
+        },
+        'jquery-ui': ['jquery']
     }
 });
 
-require(['jquery'], function(){
-
+require(['app'], function(ContactManager){
+    ContactManager.start();
 });
