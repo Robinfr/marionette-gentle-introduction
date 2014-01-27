@@ -45,32 +45,34 @@ define(['app', 'apps/contacts/list/list_view'], function (ContactManager, View) 
                             contactsListLayout.contactsRegion.show(contactsListView);
 
                             contactsListPanel.on('contact:new', function () {
-                                var newContact = new ContactManager.Entities.Contact();
+                                require(['apps/contacts/new/new_view'], function (NewView) {
+                                    var newContact = ContactManager.request('contact:entity:new');
 
-                                var view = new ContactManager.ContactsApp.New.Contact({
-                                    model: newContact
-                                });
-
-                                view.on('form:submit', function (data) {
-                                    var highestId = contacts.max(function (c) {
-                                        return c.id;
+                                    var view = new NewView.Contact({
+                                        model: newContact
                                     });
-                                    highestId = highestId.get('id');
-                                    data.id = highestId + 1;
-                                    if (newContact.save(data)) {
-                                        contacts.add(newContact);
-                                        view.trigger('dialog:close');
-                                        var newContactView = contactsListView.children.findByModel(newContact);
 
-                                        if (newContactView) { //Check if not hidden by filter
-                                            newContactView.flash('success');
+                                    view.on('form:submit', function (data) {
+                                        var highestId = contacts.max(function (c) {
+                                            return c.id;
+                                        });
+                                        highestId = highestId.get('id');
+                                        data.id = highestId + 1;
+                                        if (newContact.save(data)) {
+                                            contacts.add(newContact);
+                                            view.trigger('dialog:close');
+                                            var newContactView = contactsListView.children.findByModel(newContact);
+
+                                            if (newContactView) { //Check if not hidden by filter
+                                                newContactView.flash('success');
+                                            }
+                                        } else {
+                                            view.triggerMethod('form:data:invalid', newContact.validationError);
                                         }
-                                    } else {
-                                        view.triggerMethod('form:data:invalid', newContact.validationError);
-                                    }
-                                });
+                                    });
 
-                                ContactManager.dialogRegion.show(view);
+                                    ContactManager.dialogRegion.show(view);
+                                });
                             });
                         });
 

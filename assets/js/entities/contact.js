@@ -94,5 +94,9 @@ define(['app', 'apps/config/storage/localstorage'], function (ContactManager) {
         ContactManager.reqres.setHandler('contact:entity', function (id) {
             return API.getContactEntity(id);
         });
+
+        ContactManager.reqres.setHandler('contact:entity:new', function(){
+            return new Entities.Contact();
+        });
     });
 });
