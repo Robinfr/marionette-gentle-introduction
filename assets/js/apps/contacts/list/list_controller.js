@@ -3,7 +3,7 @@ define(['app', 'apps/contacts/list/list_view'], function (ContactManager, View) 
         List.Controller = {
             listContacts: function (criterion) {
                 /*var loadingView = new ContactManager.Common.Views.Loading();
-                ContactManager.mainRegion.show(loadingView);*/
+                 ContactManager.mainRegion.show(loadingView);*/
 
                 require(['entities/contact'], function () {
 
@@ -14,18 +14,18 @@ define(['app', 'apps/contacts/list/list_view'], function (ContactManager, View) 
 
                     $.when(fetchingContacts).done(function (contacts) {
                         /*var filteredContacts = ContactManager.Entities.FilteredCollection({
-                            collection: contacts,
-                            filterFunction: function (filterCriterion) {
-                                var criterion = filterCriterion.toLowerCase();
-                                return function (contact) {
-                                    if (contact.get('firstName').toLowerCase().indexOf(criterion) !== -1
-                                        || contact.get('lastName').toLowerCase().indexOf(criterion) !== -1
-                                        || contact.get('phoneNumber').toLowerCase().indexOf(criterion) !== -1) {
-                                        return contact;
-                                    }
-                                }
-                            }
-                        });*/
+                         collection: contacts,
+                         filterFunction: function (filterCriterion) {
+                         var criterion = filterCriterion.toLowerCase();
+                         return function (contact) {
+                         if (contact.get('firstName').toLowerCase().indexOf(criterion) !== -1
+                         || contact.get('lastName').toLowerCase().indexOf(criterion) !== -1
+                         || contact.get('phoneNumber').toLowerCase().indexOf(criterion) !== -1) {
+                         return contact;
+                         }
+                         }
+                         }
+                         });*/
                         var filteredContacts = contacts;
 
                         if (criterion) {
@@ -88,21 +88,23 @@ define(['app', 'apps/contacts/list/list_view'], function (ContactManager, View) 
                         });
 
                         contactsListView.on('itemview:contact:edit', function (childView, model) {
-                            var view = new ContactManager.ContactsApp.Edit.Contact({
-                                model: model
-                            });
+                            require(['apps/contacts/edit/edit_view'], function (EditView) {
+                                var view = new EditView.Contact({
+                                    model: model
+                                });
 
-                            view.on('form:submit', function (data) {
-                                if (model.save(data)) {
-                                    childView.render();
-                                    view.trigger('dialog:close');
-                                    childView.flash('success');
-                                } else {
-                                    view.triggerMethod('form:data:invalid', model.validationError);
-                                }
-                            });
+                                view.on('form:submit', function (data) {
+                                    if (model.save(data)) {
+                                        childView.render();
+                                        view.trigger('dialog:close');
+                                        childView.flash('success');
+                                    } else {
+                                        view.triggerMethod('form:data:invalid', model.validationError);
+                                    }
+                                });
 
-                            ContactManager.dialogRegion.show(view);
+                                ContactManager.dialogRegion.show(view);
+                            });
                         });
 
                         ContactManager.mainRegion.show(contactsListLayout);

@@ -10,7 +10,9 @@ requirejs.config({
         localStorage: 'vendor/backbone.localstorage',
         picky: 'vendor/backbone.picky',
         syphon: 'vendor/backbone.syphon',
-        tpl: 'vendor/tpl'
+        tpl: 'vendor/tpl',
+        spin: 'vendor/spin',
+        'jquery.spin': 'vendor/jquery.spin'
     },
 
     shim: {
@@ -28,7 +30,8 @@ requirejs.config({
             exports: 'Marionette'
         },
         'jquery-ui': ['jquery'],
-        'localStorage': ['backbone']
+        'localStorage': ['backbone'],
+        'jquery.spin': ['spin']
     }
 });
 
